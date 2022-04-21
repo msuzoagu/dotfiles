@@ -1,7 +1,9 @@
 #!/bin/sh
 #
-# Homebrew Update
+# Update Homebrew as well as install
+# software packages via Brewfile
 #
+# Brewfile : A file where you define softwares and applications you want to install
 
 # setup colors to be used to display information in terminal
 RESET=$(tput sgr0)
@@ -17,4 +19,14 @@ update_homebrew() {
 	echo " "
 }
 
+# Install software and applications via Brewfile
+install_software_packages() {
+	echo "Installing Homebrew Packages"
+	echo "${YELLOW}> brew bundle"
+	brew bundle
+	echo "${RESET}"
+	echo " "
+}
+
 update_homebrew
+install_software_packages

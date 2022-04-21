@@ -141,7 +141,7 @@ link_file () {
 
     if [ "$skip" == "true" ]
     then
-      success "skipped $src"
+      success "skipped linking $src to $dst"
     fi
   fi
 
@@ -167,9 +167,11 @@ install_dotfiles () {
   	dst="$HOME/.$(basename "${src%.*}")"
   	info "${YELLOW} > this is the source: $src ${RESET}"
   	info "${YELLOW} > this is the destination: $dst ${RESET}"
+    info "${YELLOW} > linking $src to $dst"
     
     # link src file to the destination on your local machine
     link_file "$src" "$dst"
+    echo " "
   done
 }
 

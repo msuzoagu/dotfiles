@@ -45,8 +45,8 @@ done
 
 export DOTFILES=$HOME/.dotfiles
 
-# # Set macOS defaults
-# $DOTFILES/macos/set-defaults.sh
+# Set macOS defaults
+$DOTFILES/macos/set-defaults.sh
 
 
 # Install Hhomebrew

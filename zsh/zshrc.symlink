@@ -18,11 +18,11 @@ then
 fi
 
 # all of our non-path/env/profile/login/logout zsh files
+# => basically any directory that contains a zsh file
 typeset -U fpath_files interactive_files completion_files
 fpath_files=($DOTFILES/**/fpath.zsh)
 interactive_files=($DOTFILES/**/*.zsh~**/completion.zsh~**/path.zsh~**/env.zsh~**/profile.zsh~**/fpath.zsh~**/login.zsh~**/logout.zsh)
 completion_files=($DOTFILES/**/completion.zsh)
-echo "${interactive_files}"
 
 # load fpath config files
 for file in ${fpath_files}; do

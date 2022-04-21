@@ -1,5 +1,8 @@
 # NOTE: Not intended to be used with zlogin, but can be.
 
+# Set up homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Login profile configs.
 setopt nullglob
 
@@ -14,6 +17,3 @@ done
 
 unset profile_files
 unsetopt nullglob
-
-# Set up homebrew
-eval "$(/opt/homebrew/bin/brew shellenv)"

@@ -4,7 +4,7 @@ autoload colors && colors
 
 if (( $+commands[git] ))
 then
-  echo "which git"
+  # echo "which git"
   git="$commands[git]"
 else
   git="/usr/bin/git"

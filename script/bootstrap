@@ -177,14 +177,16 @@ install_dotfiles () {
 
 
 install_dependencies() {
-	# If we're on a Mac, let's install and setup homebrew.
+	# If we're on a Mac
 	if [ "$(uname -s)" == "Darwin" ]
 	then
+    # let's run bin/dependencies.
 	  info "installing dependencies"
 	  if source bin/dependencies | while read -r data; do info "$data"; done
 	  then
 	    success "dependencies installed"
 	  else
+      # if bin/dependencies file not found
 	    fail "error installing dependencies"
 	  fi
 	fi	

@@ -8,6 +8,8 @@ typeset -U login_files
 login_files=($DOTFILES/**/login.zsh)
 
 # run all login files
+# source is a built-in shell command that reads
+# and executes the file content in the current shell
 for file in ${login_files}; do
     source "$file"
 done

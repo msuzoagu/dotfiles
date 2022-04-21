@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# `dependencies` handles installation of dependencies, 
+# updates, etc. You are to run it periodically so that
+# your system is kept updated
+# 
+
+set -e 
+
+# sets ~/.dotfiles/bin as parent directory 
+parentDirectory="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
+
+#sets ~/.dotfiles as the dot file directory
+dotfilesDirectory="$(cd "$( dirname "$parentDirectory" )" && pwd -P)"
+# echo $dotfilesDirectory
+
+
+displayUsageAndExit() {
+	echo "dot -- dotfiles management"
+	echo ""
+	echo "Usage: dot [options]"
+	echo ""
+	echo "Options:"
+	echo "  -e, --edit    Open dotfiles directory for editing"
+	echo "  -h, --help    Show this help message and exit"
+	exit
+}
+
+while test $# -gt 0; do
+	case "$1" in
+		"-h"|"--help")
+			displayUsageAndExit
+			;;
+		"-e"|"--edit")
+			exec "$EDITOR" "$dotfilesDirectory"
+			exit
+			;;
+		*)
+			echo "Invalid option: $1"
+			displayUsageAndExit
+			;;
+	esac
+	shift
+done
+
+export DOTFILES=$HOME/.dotfiles
+
+# # Set macOS defaults
+# $DOTFILES/macos/set-defaults.sh
+
+
+# Install homebrew
+$DOTFILES/homebrew/install.sh 2>&1
+
+
+# Update Homebrew
+$dotfilesDirectory/homebrew/update.sh 2>&1
+
+
+# Install software
+echo "› $DOTFILES/script/install"
+$DOTFILES/script/install

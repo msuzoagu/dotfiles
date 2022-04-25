@@ -10,6 +10,7 @@ brew "wget"
 brew "tfenv"
 brew "rbenv"
 brew "readline"
-brew 'coreutils'
-brew 'colordiff'
+brew "coreutils"
+brew "colordiff"
+brew "pre-commit"
 brew "ruby-build"

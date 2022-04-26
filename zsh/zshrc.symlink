@@ -4,10 +4,6 @@ setopt nullglob extendedglob
 # shortcut to this dotfiles path is $DOTFILES
 export DOTFILES="$HOME/.dotfiles"
 
-# Set up rbenv in your shell
-eval "$(rbenv init - zsh)"
-
-
 # Stash your environment variables in ~/.localrc. 
 # This means they'll stay out of your main dotfiles
 # repository (which may be public, like this one), 

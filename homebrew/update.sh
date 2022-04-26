@@ -3,12 +3,15 @@
 # Update Homebrew as well as install
 # software packages via Brewfile
 #
-# Brewfile : A file where you define softwares and applications you want to install
+# Brewfile: file where you define softwares
+# and applications you want to install
 
-# setup colors to be used to display information in terminal
+# Setup colors to be used to display information in terminal
 RESET=$(tput sgr0)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
+
+set -e
 
 # Update Homebrew
 update_homebrew() {
@@ -28,5 +31,14 @@ install_software_packages() {
 	echo " "
 }
 
+# Verify the state of rbenv installation
+run_rbenv_doc() {
+	echo "verifying the state of rbenv installation"
+	echo "${YELLOW}"
+	curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-doctor | bash
+	echo "${RESET}"
+}
+
 update_homebrew
 install_software_packages
+run_rbenv_doc

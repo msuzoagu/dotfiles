@@ -9,6 +9,8 @@ RESET=$(tput sgr0)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
 
+set -e
+
 # check for homebrew
 install_homebrew() {
 	if test ! $(which brew)

@@ -1,3 +1,4 @@
+alias ga="git add"
 alias gc="git clone"
 alias gb="git branch"
 alias gaa="git add ."

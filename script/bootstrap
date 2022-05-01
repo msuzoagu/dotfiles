@@ -47,11 +47,11 @@ setup_gitconfig() {
 	# if file git/gitconfig.local.symlink does exist
 	if [[ -f git/gitconfig.symlink ]]; 
 	then
-		info "${YELLOW} > git/gitconfig.local.symlink already exists${RESET}" 
+		info "${YELLOW} > git/gitconfig.symlink already exists${RESET}" 
 		info "${YELLOW} > take a look and confirm the values set in it${RESET}"
 	else 
 		# if file git/gitconfig.local.symlink does not exist
-		if ! [ -f git/gitconfig.local.symlink ]
+		if ! [ -f git/gitconfig.symlink ]
 		then 
 			info 'setup gitconfig'
 

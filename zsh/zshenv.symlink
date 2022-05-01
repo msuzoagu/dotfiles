@@ -15,15 +15,22 @@ typeset -U path_files env_files
 path_files=($DOTFILES/**/path.zsh~**/fpath.zsh)
 env_files=($DOTFILES/**/env.zsh)
 
+
 # load the path files
 for file in ${path_files}; do
   source "$file"
 done
 
+
 # load the env files
 for file in ${env_files}; do
   source "$file"
 done
+
+
+# Sublime Text Path: https://www.sublimetext.com/docs/command_line.html
+export PATH="/Applications/Sublime Text.app/Contents/SharedSupport/bin:$PATH"
+
 
 unset path_files env_files
 unsetopt nullglob extendedglob

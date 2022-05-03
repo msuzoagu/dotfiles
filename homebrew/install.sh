@@ -34,6 +34,7 @@ install_homebrew() {
 # Update Homebrew
 update_homebrew() {
 	echo "Updating Homebrew"
+	eval "$(/opt/homebrew/bin/brew shellenv)"
 	echo "${YELLOW}> brew update"
 	brew update
 	echo "${RESET}"

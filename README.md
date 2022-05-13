@@ -29,6 +29,20 @@ Anything in `bin/**` gets added to your `$PATH`.
 >> Read `zsh/fpath.zsh` as well as `zsh/config.zsh`
 
 
+## Issues Encountered
+
+### Installing `asdf` via Brewfile
+After installing `asdf` via Homebrew, you need to add `asdf` to the shell environment. 
+
+Since installation is via brewfile, I missed the post installation message on how to urging me to add `/opt/homebrew/opt/asdf/libexec/asdf.sh` to `~/.zshrc`. 
+
+Documentation for installing `asdf` via Homebrew states: 
+> Add asdf.sh to your ~/.zshrc with:
+>> `echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc`
+
+but that path was wrong. Runniing `brew info asdf` reveals the current path, which was used to construct `dotfiles/asdf/asdf.zsh`
+
+
 ## Getting Started
 
 Run this: 

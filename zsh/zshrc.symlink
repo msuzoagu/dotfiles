@@ -32,8 +32,8 @@ for file in ${interactive_files}; do
 done
 
 # initialize autocomplete here, otherwise functions won't be loaded
-autoload -U compinit
-compinit
+autoload bashcompinit && bashcompinit
+autoload -Uz compinit && compinit
 
 # load every completion after autocomplete loads
 for file in ${completion_files}; do

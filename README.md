@@ -6,12 +6,9 @@ Draws heavily from [Zack Holman's dotfiles](https://github.com/holman/dotfiles) 
 ## How Things Work
 Supported shell is [Zsh](https://zsh.sourceforge.io). 
 
-Everything's built around topic areas. If you're adding a new area to your
-forked dotfiles — say, "Java" — you can simply add a `java` directory and put
-files in there. 
+Everything's built around topic areas. If you're adding a new area to your forked dotfiles — say, "Java" — you can simply add a `java` directory and put files in there. 
 
-Anything with an extension of `.zsh` is automatically loaded into your 
-shell. 
+Anything with an extension of `.zsh` is automatically loaded into your shell. 
 > **How?** 
 > 
 >>In `zsh/zshrc.symlink`, we read and execute all files with .zsh extension via [source command](https://linuxcommand.org/lc3_man_pages/sourceh.html)
@@ -30,7 +27,6 @@ Anything in `bin/**` gets added to your `$PATH`.
 
 
 ## Issues Encountered
-
 ### Installing `asdf` via Brewfile
 After installing `asdf` via Homebrew, you need to add `asdf` to the shell environment. 
 
@@ -40,8 +36,8 @@ Documentation for installing `asdf` via Homebrew states:
 > Add asdf.sh to your ~/.zshrc with:
 >> `echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc`
 
-but that path was wrong. Runniing `brew info asdf` reveals the current path, which was used to construct `dotfiles/asdf/asdf.zsh`
-
+Running `brew info asdf` reveals the current path, which was used to construct `dotfiles/asdf/asdf.zsh`
+ 
 
 ## Getting Started
 

@@ -53,8 +53,8 @@ need_push () {
 }
 
 directory_name() {
-  #https://scriptingosx.com/2019/07/moving-to-zsh-06-customizing-the-zsh-prompt/
-  echo "%{$fg_bold[cyan]%}%3~%f%{$reset_color%}"
+  ## https://scriptingosx.com/2019/07/moving-to-zsh-06-customizing-the-zsh-prompt/
+  # echo "%{$fg_bold[cyan]%}%3~%f%{$reset_color%}"
 
   ## -> same as above but this time we insert a number between the % and / 
   ## -> thus ending up with a colored backward slash at the end of path
@@ -62,7 +62,7 @@ directory_name() {
   # echo "%{$fg_bold[cyan]%}%2/%\/%{$reset_color%}"
 
   ## -> this prints the full path of the current working directory
-  # echo "%{$fg_bold[cyan]%}%~%{$reset_color%}"
+  echo "%{$fg_bold[cyan]%}%~%{$reset_color%}"
 }
 
 local smiley="%(?,%{$fg[green]%}☺%{$reset_color%},%{$fg[red]%}☺%{$reset_color%})"

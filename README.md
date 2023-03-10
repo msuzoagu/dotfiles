@@ -37,9 +37,19 @@ Documentation for installing `asdf` via Homebrew states:
 >> `echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc`
 
 Running `brew info asdf` reveals the current path, which was used to construct `dotfiles/asdf/asdf.zsh`
- 
+
+
 
 ## Getting Started
+### On a New Mac 
+`git` has a dependency on _Xcode Command Line Tools_ which you can 
+install by running `gcc` in terminal before running the commands
+below
+
+
+### On an Existing Mac 
+Keep in mind that this is my own personal setup so I might make changes without documentating them here first. Thus ensure you 
+have a backup of your system before running the commands below. 
 
 Run this: 
 

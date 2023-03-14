@@ -1,4 +1,4 @@
-alias cs='clear'
+alias cl='clear'
 alias up='cd ../'
 alias reload='. ~/.zshrc'
 

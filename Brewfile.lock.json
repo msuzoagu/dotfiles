@@ -6,6 +6,9 @@
       },
       "homebrew/core": {
         "revision": "41dfd4d18b29b4ee9921aec7daaacbc55723c170"
+      },
+      "kylef/formulae": {
+        "revision": "00757e80d6861651d3dc18bbc978edf9a5d0a8a9"
       }
     },
     "brew": {
@@ -919,6 +922,10 @@
             }
           }
         }
+      },
+      "kylef/formulae/swiftenv": {
+        "version": "1.4.0",
+        "bottle": false
       }
     }
   },

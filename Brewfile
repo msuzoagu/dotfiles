@@ -3,6 +3,14 @@ tap "homebrew/bundle"
 tap "homebrew/core"
 tap "homebrew/cask"
 tap "kylef/formulae"
+tap "hashicorp/tap"
+
+
+## install  macOS UI apps using Homebrew
+## How to check if these are installed already?
+# cask "visual-studio-code"
+# cask "sublime-text"
+
 
 brew "jq"
 brew "gh"
@@ -17,6 +25,7 @@ brew "pyenv"
 brew "rbenv"
 brew "vapor"
 brew "awscli"
+brew "ansible"
 brew "fastlane"
 brew "cfn-lint"
 brew "readline"
@@ -26,11 +35,8 @@ brew "colordiff"
 brew "pre-commit"
 brew "ruby-build"
 brew "swiftformat"
-brew "sublime-text"
 brew "rbenv-gemset"
 brew "postgresql@14"
 brew "rbenv-bundler"
+brew "hashicorp/tap/packer"
 brew "kylef/formulae/swiftenv"
-
-# install  macOS UI apps using Homebrew
-# cask "visual-studio-code"

@@ -1,9 +1,12 @@
 [user]
   name = msuzoagu
   email = msuzoagu@users.noreply.github.com
+	signingkey = 443385F4
 [credential]
   helper = osxkeychain
 [init]
   defaultBranch = main
 [core]
 	editor = subl -n -w
+[commit]
+	gpgsign = true

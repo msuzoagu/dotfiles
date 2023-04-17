@@ -1,6 +1,7 @@
 # add additional repositories which are not in the official formale
 tap "homebrew/bundle"
 tap "homebrew/core"
+tap "homebrew/cask"
 tap "kylef/formulae"
 
 brew "jq"
@@ -23,12 +24,13 @@ brew "swiftlint"
 brew "coreutils"
 brew "colordiff"
 brew "pre-commit"
-brew "postgresql@14"
 brew "ruby-build"
 brew "swiftformat"
+brew "sublime-text"
 brew "rbenv-gemset"
+brew "postgresql@14"
 brew "rbenv-bundler"
 brew "kylef/formulae/swiftenv"
 
 # install  macOS UI apps using Homebrew
-cask "visual-studio-code"
+# cask "visual-studio-code"

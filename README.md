@@ -35,7 +35,7 @@ Supported shell is [Zsh](https://zsh.sourceforge.io).
 
 
 ## On chruby, ruby-install, ruby-build, and openssl
-[ruby-install]() is used to install different versions of Ruby and [chruby]() is used to switch to a specific version.
+[ruby-install](https://github.com/postmodern/ruby-install) is used to install different versions of Ruby and [chruby](https://github.com/postmodern/chruby) is used to switch to a specific version.
 
 #### openssl and ruby-build
 [ruby-build](https://github.com/rbenv/ruby-build) will download and build its own instance of OpenSSL. If you use a utility like ruby-build (or something like rbenv which relies on ruby-build), then this is important. By default ruby-build will download and build it’s own instance of OpenSSL. We want it to use the one we installed, and this compile option does that:

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 # $0 is the name of the running process; in this case script
 # cd "$(dirname "$0")/.." means run`cd script/bootstrap`
 cd "$(dirname "$0")/.."
@@ -10,7 +11,6 @@ DOTFILES_ROOT=$(pwd -P)
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail
 # https://web.archive.org/web/20110314180918/http://www.davidpashley.com/articles/writing-robust-shell-scripts.html
 set -e
-
 
 echo ' '
 
@@ -88,16 +88,11 @@ link_file () {
 
     if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
     then
-
       local currentSrc="$(readlink $dst)"
-
       if [ "$currentSrc" == "$src" ]
       then
-
         skip=true;
-
       else
-
         user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
         [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
         read -n 1 action
@@ -152,13 +147,43 @@ link_file () {
   fi
 }
 
+get_tfenv_to_verify_terraform_signature() {
+
+  info 'linking tfenv'
+
+  local overwrite_all=false backup_all=false skip_all=false
+
+  # for each directory inside ~/.dotfiles/tfenv that has a file ending in symlink
+  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 3 -name '*.symlink' -not -path '*.git*') 
+  do
+
+    STRING="use-gpgv"
+    # if the file contains the string "use-gpgv"
+    if [[ "${src}" == *"$STRING"* ]]; then 
+
+      # setup the destination on your local machine to be: $HOME/.tfenv/use-gpgv
+      dst="$HOME/.$(basename "$(dirname "$src")")"
+      info "${YELLOW} > this is the source: $src ${RESET}"
+      info "${YELLOW} > this is the destination: $dst ${RESET}"
+
+      # linking $HOME/.dotfiles/tfenv/use-gpgv.symlink to $HOME/.tfenv/use-gpgv
+      info "${YELLOW} > linking $src to $dst"      
+      
+      # link src file to the destination on your local machine
+      link_file "$src" "$dst"
+      echo " "      
+    fi
+  done
+}
+
+
 install_dotfiles () {
   info 'installing dotfiles'
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  # for each directory inside ~/.dotfiles that has a file ending in symlink
-  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*')
+  # for each directory inside ~/.dotfiles that has a file ending in symlink excluding .git and tfenv directories
+  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*' -not -path '*/tfenv/*')
   do
   	# setup the destination on your local machine 
   	dst="$HOME/.$(basename "${src%.*}")"
@@ -198,7 +223,9 @@ finished() {
 	echo -e "${RESET}"
 }
 
+
 setup_gitconfig
 install_dotfiles
+#get_tfenv_to_verify_terraform_signature
 install_dependencies
 finished

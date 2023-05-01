@@ -51,12 +51,12 @@ install_software_packages() {
 }
 
 # Verify the state of rbenv installation
-run_rbenv_doc() {
-	echo "verifying the state of rbenv installation"
-	echo "${YELLOW}"
-	curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-doctor | bash
-	echo "${RESET}"
-}
+# run_rbenv_doc() {
+# 	echo "verifying the state of rbenv installation"
+# 	echo "${YELLOW}"
+# 	curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-doctor | bash
+# 	echo "${RESET}"
+# }
 
 install_homebrew
 update_homebrew

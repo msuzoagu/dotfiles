@@ -15,6 +15,7 @@ cask "session-manager-plugin"
 ## install command line software
 brew "jq"
 brew "gh"
+brew "yq" # parse yaml files via shell; useful in Makefiles
 brew "git"
 brew "grc"
 brew "asdf"

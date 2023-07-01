@@ -5,7 +5,12 @@ setopt nullglob extendedglob
 # shortcut to this dotfiles path is $DOTFILES
 export DOTFILES="$HOME/.dotfiles"
 
-
+# add $HOME/bin, which does not exist
+# by default and thus has to be 
+# created, to $PATH so that personal
+# scripts are discoverable and made
+# available on the command line
+export PATH="$PATH:$HOME/bin"
 
 # path and env zsh files
 typeset -U path_files env_files

@@ -9,20 +9,27 @@ tap "hashicorp/tap"
 ## install  macOS UI apps using Homebrew
 ## How to check if these are installed already?
 # cask "sublime-text"
+cask "session-manager-plugin"
 
 
+## install command line software
 brew "jq"
 brew "gh"
+brew "go"
+brew "yq" # parse yaml files via shell; useful in Makefiles
 brew "git"
 brew "grc"
 brew "asdf"
 brew "grep"
 brew "tree"
+brew "make"
 brew "wget"
+brew "delve"
 brew "tfenv"
 brew "pyenv"
 brew "vapor"
 brew "chruby"
+brew "mysql"
 brew "awscli"
 brew "ansible"
 brew "openssl"

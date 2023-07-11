@@ -38,7 +38,7 @@ git_prompt_info () {
 # and that you only care about one specific origin. If this 
 # is not the case, you might want to use: 
 # `$git cherry -v @{upstream}` instead.
-need_push () {
+need_push() {
   if [ $($git rev-parse --is-inside-work-tree 2>/dev/null) ]
   then
     number=$($git cherry -v origin/$(git symbolic-ref --short HEAD) 2>/dev/null | wc -l | bc)
@@ -79,8 +79,26 @@ battery_status() {
   fi
 }
 
+# time() {
+#   # echo "D{%Y%m%d-%H:%M:%S}"
+#   # echo -n \[\$(date +%H:%M:%S)\]\
+#   # echo "%{$(date +%H:%M:%S)}"
+#   # "$(date '+%A %B %d %Y %r')"
+#   # tome=
+# }
+
+
+day() {
+  echo "%{$(date +%D)"
+}
+
+currentTime() {
+  echo "%{$(date +%r)"
+}
+
+
 # export PROMPT=$'\n$(battery_status)in $(directory_name) $(git_dirty)$(need_push)\n› '
-PROMPT=$'\n$(battery_status)in $(directory_name) $(git_dirty)$(need_push)\n› '
+PROMPT=$'\n[$(currentTime)] $(battery_status)in $(directory_name) $(git_dirty)$(need_push)\n› '
 set_prompt () {
   export RPROMPT="%{$fg_bold[cyan]%}%{$reset_color%}"
 }

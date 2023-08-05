@@ -1,22 +1,24 @@
-alias cl='clear'
-alias hm='cd ~'
-alias up='cd ../'
-alias reload='. ~/.zshrc'
+alias cl="clear"
+alias up="cd ../"
+alias hm="cd $HOME"
+alias reload="exec $SHELL"
 
+alias ga="git add"
+alias gd="git diff"
 alias gl="git log"
-alias gc="git clone"
+alias gs="git status"
 alias gb="git branch"
 alias gaa="git add ."
-alias gst="git status"
 alias gch="git checkout"
+alias gcl="git clone"
 alias gcm="git commit -m"
-alias gpo="git push origin"
 alias gnb="git checkout -b"
-alias grnb="git branch -m "
-alias gpato="git push -u origin"
+alias gpo="git push origin"
+alias grb="git branch -m "
+alias gpat="git push -u origin"
 alias gpom="git push origin main"
 alias grao="git remote add origin"
-alias glista="git config --list | grep alias"
+alias gcan="git commit --amend --no-edit"
 
 if hash colordiff; then
     alias diff=colordiff

@@ -10,6 +10,7 @@ tap "hashicorp/tap"
 ## How to check if these are installed already?
 # cask "sublime-text"
 cask "session-manager-plugin"
+cask "mactex"
 
 
 ## install command line software

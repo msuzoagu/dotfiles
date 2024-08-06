@@ -1,16 +1,20 @@
 # add additional repositories which are not in the official formale
-tap "homebrew/bundle"
-tap "homebrew/core"
-tap "homebrew/cask"
+# tap "homebrew/bundle"
+# tap "homebrew/core"
+# tap "homebrew/cask"
 tap "kylef/formulae"
 tap "hashicorp/tap"
 
 
+
 ## install  macOS UI apps using Homebrew
 ## How to check if these are installed already?
-# cask "sublime-text"
-cask "session-manager-plugin"
+
 cask "mactex"
+cask "docker"
+# cask "sublime-text"
+# cask "visual-studio-code"
+cask "session-manager-plugin"
 
 
 ## install command line software
@@ -45,5 +49,7 @@ brew "swiftformat"
 brew "ruby-install"
 brew "postgresql@14"
 brew "terraform-docs"
+brew "git-filter-repo"
 brew "hashicorp/tap/packer"
 brew "kylef/formulae/swiftenv"
+brew "xcodesorg/made/xcodes"

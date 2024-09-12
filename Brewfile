@@ -27,13 +27,16 @@ brew "yq" # parse yaml files via shell; useful in Makefiles
 brew "act"
 brew "git"
 brew "grc"
+brew "tig" # command-line GUI for git
 brew "vim"
 brew "asdf"
 brew "grep"
 brew "tree"
 brew "make"
 brew "mint" # installed for SwiftPackageManager work
+brew "rust" # stable diffusion requirement
 brew "wget"
+brew "cmake" # stable diffusion requirement
 brew "delve"
 brew "tfenv"
 brew "pyenv"
@@ -43,6 +46,7 @@ brew "mysql"
 brew "awscli"
 brew "ansible"
 brew "openssl"
+brew "protobuf" # stable diffusion requirement
 brew "cfn-lint"
 brew "readline"
 brew "swiftlint"

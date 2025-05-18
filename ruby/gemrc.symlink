@@ -1,1 +1,27 @@
-gem: --no-document
+# ------------------------------------------------------------------------------
+# RubyGems configuration for chruby-managed envirnoment
+#
+# This setup ensures clean, version-isolated gem installs by:
+# - Disabling fallback to ~/.gem (user gem dir)
+# - Avoiding hardcoded Ruby paths in binstubs
+# - Skipping unnecessary documentation during installs
+#
+# Options:
+# --no-user-install
+#   Prevents RubyGems from installing gems into ~/.gem/ruby/X.Y.Z
+#   This ensures all gems are installed into the GEM_HOME managed by chruby
+#   Ensures version isolation and avoids polluting global gem namespace (~/.gem)
+# 
+# --env-shebang
+#   Ensures installed binstubs use shebang that respects current selected ruby
+#   This prevents breakage when switching Ruby versions
+# 
+# --no-document
+#   Skips installing of RDoc/Ri documentation for each gem
+#
+# For more information:
+#   - https://github.com/postmoden/chruby
+#   - https://guides.rubygems.org/command-reference/#gem-install
+# ------------------------------------------------------------------------------
+
+gem: --no-user-install --env-shebang --no-document

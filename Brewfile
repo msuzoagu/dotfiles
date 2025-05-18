@@ -10,8 +10,15 @@ tap "git-chglog/git-chglog"
 ## install  macOS UI apps using Homebrew
 ## How to check if these are installed already?
 
-cask "mactex"
+
+# Set arguments passed to all `brew install --cask` commands for `cask "..."`
+# In this example, pass `--appdir=~/Applications` and `--require_sha`
+# cask_args appdir: "~/Applications", require_sha: true
+
+cask "gimp"
+# cask "mactex"
 cask "docker"
+# cask "mark-text"
 # cask "sublime-text"
 # cask "visual-studio-code"
 cask "postgres-unofficial"
@@ -31,6 +38,7 @@ brew "tig" # command-line GUI for git
 brew "vim"
 brew "asdf"
 brew "grep"
+brew "hurl"
 brew "tree"
 brew "make"
 brew "mint" # installed for SwiftPackageManager work
@@ -39,6 +47,7 @@ brew "wget"
 brew "cmake" # stable diffusion requirement
 brew "delve"
 brew "tfenv"
+brew "trivy" # scan github repo's for vulnerabilities
 brew "pyenv"
 brew "vapor"
 brew "chruby"

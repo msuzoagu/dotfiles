@@ -1,27 +1,39 @@
 #!/usr/bin/env bash
 
-
+#-------------------------------------------------------------------------------
 # $0 is the name of the running process; in this case script
 # cd "$(dirname "$0")/.." means run`cd script/bootstrap`
+#-------------------------------------------------------------------------------
 cd "$(dirname "$0")/.."
 
-# set name of current directory to a variable 
+
+#-------------------------------------------------------------------------------
+# Set name of current directory to a variable 
+#-------------------------------------------------------------------------------
 DOTFILES_ROOT=$(pwd -P)
 
+
+#-------------------------------------------------------------------------------
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail
 # https://web.archive.org/web/20110314180918/http://www.davidpashley.com/articles/writing-robust-shell-scripts.html
+#-------------------------------------------------------------------------------
 set -e
 
 echo ' '
 
-# setup colors to be used to display information in terminal
+
+#-------------------------------------------------------------------------------
+# Setup colors to be used to display information in terminal
 # https://unix.stackexchange.com/questions/269077/tput-setaf-color-table-how-to-determine-color-codes
+#-------------------------------------------------------------------------------
 RESET=$(tput sgr0)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
 
 
-# format strings used to display prompts and read user inputs
+#-------------------------------------------------------------------------------
+# Format strings used to display prompts and read user inputs
+#-------------------------------------------------------------------------------
 info () {
   printf "\r  [ \033[00;34m..\033[0m ] $1\n"
 }
@@ -40,7 +52,9 @@ fail () {
   exit
 }
 
-
+#-------------------------------------------------------------------------------
+# Set up Gitconfig
+#-------------------------------------------------------------------------------
 setup_gitconfig() {
 	info "Setting up gitconfig.local.symlink"
 
@@ -77,6 +91,9 @@ setup_gitconfig() {
 	fi	
 }
 
+#-------------------------------------------------------------------------------
+# Link files
+#-------------------------------------------------------------------------------
 link_file () {
   local src=$1 dst=$2
 
@@ -147,6 +164,8 @@ link_file () {
   fi
 }
 
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 get_tfenv_to_verify_terraform_signature() {
 
   info 'linking tfenv'
@@ -176,16 +195,18 @@ get_tfenv_to_verify_terraform_signature() {
   done
 }
 
-
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 install_dotfiles () {
   info 'installing dotfiles'
 
   local overwrite_all=false backup_all=false skip_all=false
 
-  # for each directory inside ~/.dotfiles that has a file ending in symlink excluding .git and tfenv directories
+  ## for each directory inside ~/.dotfiles that has a file ending in 
+  ## symlink excluding .git and tfenv directories
   for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*' -not -path '*/tfenv/*')
   do
-  	# setup the destination on your local machine 
+  	## setup the destination on your local machine 
   	dst="$HOME/.$(basename "${src%.*}")"
 
   	info "${YELLOW}Print file in DOTFILES_ROOT${RESET}"
@@ -201,6 +222,8 @@ install_dotfiles () {
 }
 
 
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 install_dependencies() {
 	# If we're on a Mac
 	if [ "$(uname -s)" == "Darwin" ]
@@ -217,6 +240,9 @@ install_dependencies() {
 	fi	
 }
 
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 finished() {
 	echo " "
 	echo -e "${GREEN}All installed!"
@@ -224,6 +250,9 @@ finished() {
 }
 
 
+#-------------------------------------------------------------------------------
+# Call functions 
+#-------------------------------------------------------------------------------
 setup_gitconfig
 install_dotfiles
 #get_tfenv_to_verify_terraform_signature

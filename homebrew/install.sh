@@ -1,17 +1,20 @@
 #!/bin/sh
-#
+
+#-------------------------------------------------------------------------------
 # Homebrew Installation
 #
-
 # setup colors to be used to display information in terminal
 # https://unix.stackexchange.com/questions/269077/tput-setaf-color-table-how-to-determine-color-codes
+#-------------------------------------------------------------------------------
 RESET=$(tput sgr0)
 GREEN=$(tput setaf 2)
 YELLOW=$(tput setaf 3)
 
 set -e
 
-# check for homebrew
+#-------------------------------------------------------------------------------
+# Check for homebrew
+#-------------------------------------------------------------------------------
 install_homebrew() {
 	if test ! $(which brew)
 	then 
@@ -31,7 +34,9 @@ install_homebrew() {
 	fi 
 }
 
+#-------------------------------------------------------------------------------
 # Update Homebrew
+#-------------------------------------------------------------------------------
 update_homebrew() {
 	echo "Updating Homebrew"
 	eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -41,7 +46,9 @@ update_homebrew() {
 	echo " "
 }
 
+#-------------------------------------------------------------------------------
 # Install software and applications via Brewfile
+#-------------------------------------------------------------------------------
 install_software_packages() {
 	echo "Installing Homebrew Packages"
 	echo "${YELLOW}> brew bundle"
@@ -50,6 +57,7 @@ install_software_packages() {
 	echo " "
 }
 
+#-------------------------------------------------------------------------------
 # Verify the state of rbenv installation
 # run_rbenv_doc() {
 # 	echo "verifying the state of rbenv installation"
@@ -57,8 +65,10 @@ install_software_packages() {
 # 	curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-doctor | bash
 # 	echo "${RESET}"
 # }
+#-------------------------------------------------------------------------------
+
 
 install_homebrew
 update_homebrew
 install_software_packages
-run_rbenv_doc
+# run_rbenv_doc

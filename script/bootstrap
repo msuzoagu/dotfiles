@@ -17,9 +17,25 @@ DOTFILES_ROOT=$(pwd -P)
 # https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail
 # https://web.archive.org/web/20110314180918/http://www.davidpashley.com/articles/writing-robust-shell-scripts.html
 #-------------------------------------------------------------------------------
-set -e
+set -euo pipefail  # Safer script execution
+
+info() {
+  echo "→ $1"
+}
 
 echo ' '
+
+
+# Safe dry-run detection
+DRY_RUN=false
+for arg in "$@"; do
+  if [[ "$arg" == "--dry-run" ]]; then
+    DRY_RUN=true
+    echo "DRY RUN: No changes will be made"
+    break
+  fi
+done
+
 
 
 #-------------------------------------------------------------------------------
@@ -243,6 +259,74 @@ install_dependencies() {
 
 #-------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------
+install_personal_scripts() {
+  info 'Installing personal scripts'
+
+  # Dry-run section
+  if $DRY_RUN; then 
+    echo "[Dry Run] Would create directory: $HOME/bin"
+    for script in "$HOME/.dotfiles"/mybin/*; do
+      if [ -f "$script" ]; then
+        echo "[Dry Run] Would link: $script → $HOME/bin/$(basename "$script")"
+      fi
+    done
+    echo "[Dry Run] Would add ~/bin to PATH in shell config"
+    return 0
+  fi
+
+  # Real execution section
+  # Create ~/bin if it doesn't exist
+  if [ ! -d "$HOME/bin" ]; then
+    info "Creating $HOME/bin"
+    mkdir -p "$HOME/bin" || {
+      echo "Error: Failed to create $HOME/bin" >&2
+      exit 1
+    }
+  fi
+
+  # Symlink all scripts to ~/bin
+  for script in "$HOME/.dotfiles"/mybin/*; do
+    if [ -f "$script" ]; then  # Only process regular files
+      script_name=$(basename "$script")
+      target="$HOME/bin/$script_name"
+      
+      # Skip if target exists and isn't our symlink
+      if [ -e "$target" ] && [ ! -L "$target" ]; then
+        echo "Warning: $target already exists (not a symlink). Skipping." >&2
+        continue
+      fi
+      
+      # Skip if target is a symlink pointing elsewhere
+      if [ -L "$target" ] && [ "$(readlink "$target")" != "$script" ]; then
+        echo "Warning: $target points to different location. Skipping." >&2
+        continue
+      fi
+      
+      # Only proceed if:
+      # 1. Target doesn't exist, OR
+      # 2. Target is our existing symlink
+      info "Linking $script_name"
+      ln -sfv "$script" "$target"
+      chmod +x "$target"
+    fi
+  done
+
+  # Detect shell config file
+  shell_rc="$HOME/.${SHELL##*/}rc"
+  [ -f "$shell_rc" ] || shell_rc="$HOME/.bash_profile"
+
+  # Add ~/bin to PATH if not already present
+  if ! [[ ":$PATH:" == *":$HOME/bin:"* ]]; then
+    info "Adding ~/bin to PATH in $shell_rc"
+    echo -e "\n# Added by dotfiles bootstrap" >> "$shell_rc"
+    echo 'export PATH="$HOME/bin:$PATH"' >> "$shell_rc"
+    echo "→ Please restart your shell or run:"
+    echo "  source $shell_rc"
+  fi
+}
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 finished() {
 	echo " "
 	echo -e "${GREEN}All installed!"
@@ -257,4 +341,5 @@ setup_gitconfig
 install_dotfiles
 #get_tfenv_to_verify_terraform_signature
 install_dependencies
+install_personal_scripts
 finished

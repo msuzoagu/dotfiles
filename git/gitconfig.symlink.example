@@ -1,0 +1,9 @@
+[user]
+  name = AUTHORNAME
+  email = AUTHOREMAIL
+[credential]
+  helper = GIT_CREDENTIAL_HELPER
+[init]
+  defaultBranch = DEFAULT_BRANCH
+[core]
+  editor = EDITOR

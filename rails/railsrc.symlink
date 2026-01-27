@@ -1,0 +1,7 @@
+--skip-test
+--skip-bundle
+--skip-hotwire
+--skip-javascript
+--skip-action-text
+--skip-system-test
+

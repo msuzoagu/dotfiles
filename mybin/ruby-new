@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+##----------------------Argument Validation---------------------##
+if [ $# -lt 1 ]; then
+  echo "Usage: ruby-new <project-name>"
+  exit 1
+fi
+##--------------------------------------------------------------##
+
+proj_name="$1"
+
+##----------------------Ruby Version Check----------------------##
+echo "This script works if Bash is installed 
+(even in non-standard locations)."
+echo ""
+req_ver="3.2.2"
+version=$(ruby -e 'puts RUBY_VERSION')
+echo "Detected Ruby version: $version" 
+##--------------------------------------------------------------##
+
+
+##------------------Version comparison--------------------------##
+# Explanation:
+# 1. Print both versions on separate lines
+# 2. Sort them by version number (-V)
+# 3. Take the first (oldest) one
+# 4. If the oldest isn't our required version, version is too old
+if [ "$(printf '%s\n' "$req_ver" "$version" | sort -V |
+ head -n1)" != "$req_ver" ]; then
+    echo "Error: Ruby $req_ver+ required (found $version)" >&2
+    exit 1
+else
+    echo "Ruby $version meets requirement (>= $req_ver)"
+fi
+##--------------------------------------------------------------##
+
+
+##----------------------Directory Creation----------------------##
+if [ -z "$proj_name" ]; then
+  echo "Error: No directory name provided." >&2
+  exit 1
+fi
+
+if [ -d "$proj_name" ]; then
+  echo "Error: Directory '$proj_name' already exists" >&2
+  exit 1
+fi
+
+mkdir -p -- "$proj_name"
+echo "Created directory: $proj_name"
+##--------------------------------------------------------------##
+
+
+##-------------------------Project Setup------------------------##
+cd "$proj_name" || exit 1
+echo "$version" >> .ruby-version
+bundle init
+bundle config set --local path vendor/bundle
+echo "Project '$proj_name' successfully initialized with Ruby $version"
+##--------------------------------------------------------------##

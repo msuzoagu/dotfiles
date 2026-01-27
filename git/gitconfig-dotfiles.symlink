@@ -1,0 +1,15 @@
+[user]
+  name = msuzoagu
+  email = msuzoagu@users.noreply.github.com
+	signingkey = BCA0B85B443385F4
+[commit]
+  template = ~/.gitmessage
+  gpgsign = true
+[gpg]
+  format = ssh
+[credential]
+  helper = osxkeychain
+[init]
+  defaultBranch = main
+[color]
+  ui = true

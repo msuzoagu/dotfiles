@@ -1,0 +1,343 @@
+#!/usr/bin/env bash
+
+#-------------------------------------------------------------------------------
+# $0 is the name of the running process; in this case script
+# cd "$(dirname "$0")/.." means run`cd script/bootstrap`
+#-------------------------------------------------------------------------------
+cd "$(dirname "$0")/.."
+
+
+#-------------------------------------------------------------------------------
+# Set name of current directory to a variable
+#-------------------------------------------------------------------------------
+DOTFILES_ROOT=$(pwd -P)
+
+
+#-------------------------------------------------------------------------------
+# https://vaneyckt.io/posts/safer_bash_scripts_with_set_euxo_pipefail
+# https://web.archive.org/web/20110314180918/http://www.davidpashley.com/articles/writing-robust-shell-scripts.html
+#-------------------------------------------------------------------------------
+set -euo pipefail  # Safer script execution
+
+info() {
+  echo "→ $1"
+}
+
+echo ' '
+
+
+# Safe dry-run detection
+DRY_RUN=false
+for arg in "$@"; do
+  if [[ "$arg" == "--dry-run" ]]; then
+    DRY_RUN=true
+    echo "DRY RUN: No changes will be made"
+    break
+  fi
+done
+
+
+
+#-------------------------------------------------------------------------------
+# Setup colors to be used to display information in terminal
+# https://unix.stackexchange.com/questions/269077/tput-setaf-color-table-how-to-determine-color-codes
+#-------------------------------------------------------------------------------
+RESET=$(tput sgr0)
+GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+
+
+#-------------------------------------------------------------------------------
+# Format strings used to display prompts and read user inputs
+#-------------------------------------------------------------------------------
+info () {
+  printf "\r  [ \033[00;34m..\033[0m ] $1\n"
+}
+
+user () {
+  printf "\r  [ \033[0;33m??\033[0m ] $1\n"
+}
+
+success () {
+  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] $1\n"
+}
+
+fail () {
+  printf "\r\033[2K  [\033[0;31mFAIL\033[0m] $1\n"
+  echo ''
+  exit
+}
+
+#-------------------------------------------------------------------------------
+# Set up Gitconfig
+#-------------------------------------------------------------------------------
+setup_gitconfig() {
+	info "Setting up gitconfig.local.symlink"
+
+	# if file git/gitconfig.local.symlink does exist
+	if [[ -f git/gitconfig.symlink ]];
+	then
+		info "${YELLOW} > git/gitconfig.symlink already exists${RESET}"
+		info "${YELLOW} > take a look and confirm the values set in it${RESET}"
+	else
+		# if file git/gitconfig.local.symlink does not exist
+		if ! [ -f git/gitconfig.symlink ]
+		then
+			info 'setup gitconfig'
+
+			git_credential='cache'
+			if [ "$(uname -s)" == "Darwin" ]
+			then
+				git_credential='osxkeychain'
+			fi
+
+			user '>  what is your github author name?'
+			read -e git_authorname
+			user '>  what is your github author email?'
+			read -e git_authoremail
+      user '> what is your default branch name (either master or main)?'
+      read -e default_branch
+      user '> what is your editor (e.g. subl or emacs, vi, vim, etc)?'
+      read -e editor
+
+			sed -e "s/AUTHORNAME/$git_authorname/g" -e "s/AUTHOREMAIL/$git_authoremail/g" -e "s/GIT_CREDENTIAL_HELPER/$git_credential/g" -e "s/DEFAULT_BRANCH/$default_branch/g" -e "s/EDITOR/$editor/g" git/gitconfig.symlink.example >  git/gitconfig.symlink
+
+			success 'gitconfig'
+		fi
+	fi
+}
+
+#-------------------------------------------------------------------------------
+# Link files
+#-------------------------------------------------------------------------------
+link_file () {
+  local src=$1 dst=$2
+
+  local overwrite= backup= skip=
+  local action=
+
+  if [ -f "$dst" -o -d "$dst" -o -L "$dst" ]
+  then
+
+    if [ "$overwrite_all" == "false" ] && [ "$backup_all" == "false" ] && [ "$skip_all" == "false" ]
+    then
+      local currentSrc="$(readlink $dst)"
+      if [ "$currentSrc" == "$src" ]
+      then
+        skip=true;
+      else
+        user "File already exists: $dst ($(basename "$src")), what do you want to do?\n\
+        [s]kip, [S]kip all, [o]verwrite, [O]verwrite all, [b]ackup, [B]ackup all?"
+        read -n 1 action
+
+        case "$action" in
+          o )
+            overwrite=true;;
+          O )
+            overwrite_all=true;;
+          b )
+            backup=true;;
+          B )
+            backup_all=true;;
+          s )
+            skip=true;;
+          S )
+            skip_all=true;;
+          * )
+            ;;
+        esac
+
+      fi
+
+    fi
+
+    overwrite=${overwrite:-$overwrite_all}
+    backup=${backup:-$backup_all}
+    skip=${skip:-$skip_all}
+
+    if [ "$overwrite" == "true" ]
+    then
+      rm -rf "$dst"
+      success "removed $dst"
+    fi
+
+    if [ "$backup" == "true" ]
+    then
+      mv "$dst" "${dst}.backup"
+      success "moved $dst to ${dst}.backup"
+    fi
+
+    if [ "$skip" == "true" ]
+    then
+      success "skipped linking $src to $dst"
+    fi
+  fi
+
+  if [ "$skip" != "true" ]  # "false" or empty
+  then
+    ln -s "$1" "$2"
+    success "linked $1 to $2"
+  fi
+}
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+get_tfenv_to_verify_terraform_signature() {
+
+  info 'linking tfenv'
+
+  local overwrite_all=false backup_all=false skip_all=false
+
+  # for each directory inside ~/.dotfiles/tfenv that has a file ending in symlink
+  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 3 -name '*.symlink' -not -path '*.git*')
+  do
+
+    STRING="use-gpgv"
+    # if the file contains the string "use-gpgv"
+    if [[ "${src}" == *"$STRING"* ]]; then
+
+      # setup the destination on your local machine to be: $HOME/.tfenv/use-gpgv
+      dst="$HOME/.$(basename "$(dirname "$src")")"
+      info "${YELLOW} > this is the source: $src ${RESET}"
+      info "${YELLOW} > this is the destination: $dst ${RESET}"
+
+      # linking $HOME/.dotfiles/tfenv/use-gpgv.symlink to $HOME/.tfenv/use-gpgv
+      info "${YELLOW} > linking $src to $dst"
+
+      # link src file to the destination on your local machine
+      link_file "$src" "$dst"
+      echo " "
+    fi
+  done
+}
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+install_dotfiles () {
+  info 'installing dotfiles'
+
+  local overwrite_all=false backup_all=false skip_all=false
+
+  ## for each directory inside ~/.dotfiles that has a file ending in
+  ## symlink excluding .git and tfenv directories
+  for src in $(find -H "$DOTFILES_ROOT" -maxdepth 2 -name '*.symlink' -not -path '*.git*' -not -path '*/tfenv/*')
+  do
+  	## setup the destination on your local machine
+  	dst="$HOME/.$(basename "${src%.*}")"
+
+  	info "${YELLOW}Print file in DOTFILES_ROOT${RESET}"
+  	dst="$HOME/.$(basename "${src%.*}")"
+  	info "${YELLOW} > this is the source: $src ${RESET}"
+  	info "${YELLOW} > this is the destination: $dst ${RESET}"
+    info "${YELLOW} > linking $src to $dst"
+
+    # link src file to the destination on your local machine
+    link_file "$src" "$dst"
+    echo " "
+  done
+}
+
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+install_dependencies() {
+	# If we're on a Mac
+	if [ "$(uname -s)" == "Darwin" ]; then
+    # let's run bin/dependencies.
+	  info "installing dependencies"
+	  if bin/dependencies | while read -r data; do info "$data"; done; then
+	    success "dependencies installed"
+	  else
+      # if bin/dependencies file not found
+	    fail "error installing dependencies"
+	  fi
+	fi
+}
+
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+install_personal_scripts() {
+  info 'Installing personal scripts'
+
+  # Dry-run section
+  if $DRY_RUN; then
+    echo "[Dry Run] Would create directory: $HOME/bin"
+    for script in "$HOME/.dotfiles"/mybin/*; do
+      if [ -f "$script" ]; then
+        echo "[Dry Run] Would link: $script → $HOME/bin/$(basename "$script")"
+      fi
+    done
+    echo "[Dry Run] Would add ~/bin to PATH in shell config"
+    return 0
+  fi
+
+  # Real execution section
+  # Create ~/bin if it doesn't exist
+  if [ ! -d "$HOME/bin" ]; then
+    info "Creating $HOME/bin"
+    mkdir -p "$HOME/bin" || {
+      echo "Error: Failed to create $HOME/bin" >&2
+      exit 1
+    }
+  fi
+
+  # Symlink all scripts to ~/bin
+  for script in "$HOME/.dotfiles"/mybin/*; do
+    if [ -f "$script" ]; then  # Only process regular files
+      script_name=$(basename "$script")
+      target="$HOME/bin/$script_name"
+
+      # Skip if target exists and isn't our symlink
+      if [ -e "$target" ] && [ ! -L "$target" ]; then
+        echo "Warning: $target already exists (not a symlink). Skipping." >&2
+        continue
+      fi
+
+      # Skip if target is a symlink pointing elsewhere
+      if [ -L "$target" ] && [ "$(readlink "$target")" != "$script" ]; then
+        echo "Warning: $target points to different location. Skipping." >&2
+        continue
+      fi
+
+      # Only proceed if:
+      # 1. Target doesn't exist, OR
+      # 2. Target is our existing symlink
+      info "Linking $script_name"
+      ln -sfv "$script" "$target"
+      chmod +x "$target"
+    fi
+  done
+
+  # Detect shell config file
+  shell_rc="$HOME/.${SHELL##*/}rc"
+  [ -f "$shell_rc" ] || shell_rc="$HOME/.bash_profile"
+
+  # Add ~/bin to PATH if not already present
+  if ! [[ ":$PATH:" == *":$HOME/bin:"* ]]; then
+    info "Adding ~/bin to PATH in $shell_rc"
+    echo -e "\n# Added by dotfiles bootstrap" >> "$shell_rc"
+    echo 'export PATH="$HOME/bin:$PATH"' >> "$shell_rc"
+    echo "→ Please restart your shell or run:"
+    echo "  source $shell_rc"
+  fi
+}
+
+#-------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
+finished() {
+	echo " "
+	echo -e "${GREEN}All installed!"
+	echo -e "${RESET}"
+}
+
+
+#-------------------------------------------------------------------------------
+# Call functions
+#-------------------------------------------------------------------------------
+setup_gitconfig
+install_dotfiles
+#get_tfenv_to_verify_terraform_signature
+install_dependencies
+install_personal_scripts
+finished

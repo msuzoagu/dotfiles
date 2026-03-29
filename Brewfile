@@ -15,8 +15,8 @@ tap "git-chglog/git-chglog"
 # cask "mark-text"
 # cask "sublime-text"
 cask "zed"
+cask "postgres-app"
 cask "docker-desktop"
-cask "postgres-unofficial"
 cask "session-manager-plugin"
 #########################################################################################################
 
@@ -71,6 +71,7 @@ brew "colordiff"
 #################################### Infrastructure & Security Tools ####################################
 brew "trivy"              # scan github repo's for vulnerabilities
 brew "awscli"
+brew "fastlane"
 brew "ansible"
 brew "cfn-lint"
 brew "hashicorp/tap/packer"

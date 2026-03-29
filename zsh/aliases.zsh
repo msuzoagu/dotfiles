@@ -13,7 +13,7 @@ alias rspec="bundle exec rspec"
 
 
 #-------------------------------------------------------------------------------
-# Git 
+# Git
 #-------------------------------------------------------------------------------
 compdef _git g='git'
 alias ga="git add"
@@ -22,7 +22,7 @@ alias gl="git log"
 alias gb="git branch"
 alias gst="git status"
 alias gpo="git push origin"
-alias gpato="git push -u origin"
+alias gpto="git push -u origin"
 alias gaa="git add ."
 alias gch="git checkout"
 alias gcl="git clone"
@@ -34,7 +34,7 @@ alias gcan="git commit --amend --no-edit"
 
 
 #-------------------------------------------------------------------------------
-# Git 
+# Git
 #-------------------------------------------------------------------------------
 alias mua="ssh -T git@mua"
 alias swiftanon="ssh -T git@swiftanon"

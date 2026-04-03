@@ -2,7 +2,7 @@
 tap "kylef/formulae"
 tap "hashicorp/tap"
 tap "git-chglog/git-chglog"
-
+tap "cirruslabs/cli"
 ############################################## UI Apps ##############################################
 ## install  macOS UI apps using Homebrew
 #
@@ -47,6 +47,10 @@ brew "ruby-install"     # look into using mise to replace this
 # brew "n"      # preferred node version manager; nvm does not support Homebrew. use mise to replace this
 #########################################################################################################
 
+
+############################################ Virtualization Tools ############################################
+brew "cirruslabs/cli/tart"
+#########################################################################################################
 
 ############################################ Core CLI Tools ############################################
 brew "jq"

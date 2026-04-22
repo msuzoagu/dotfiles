@@ -1,20 +1,10 @@
-alias cl="clear"
-alias up="cd ../"
-alias hm="cd $HOME"
-alias reload="exec $SHELL"
-
-
-#-------------------------------------------------------------------------------
-# Rails
-#-------------------------------------------------------------------------------
+#################################### RAILS ####################################
 alias be="bundle exec"
 alias rake="bundle exec rake"
 alias rspec="bundle exec rspec"
 
 
-#-------------------------------------------------------------------------------
-# Git
-#-------------------------------------------------------------------------------
+##################################### GIT #####################################
 compdef _git g='git'
 alias ga="git add"
 alias gd="git diff"
@@ -31,16 +21,17 @@ alias gnb="git checkout -b"
 alias grb="git branch -m "
 alias grao="git remote add origin"
 alias gcan="git commit --amend --no-edit"
-
-
-#-------------------------------------------------------------------------------
-# Git
-#-------------------------------------------------------------------------------
 alias mua="ssh -T git@mua"
 alias swiftanon="ssh -T git@swiftanon"
 
-#-------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------
-if hash colordiff; then
-    alias diff=colordiff
-fi
+# Git Diff Clean - Show only changed lines with color, hiding headers
+# Usage: gdf path/to/file
+gdf() {
+  git diff -U0 --color "$@" | grep -vE "diff --git|index [0-9a-f]|--- a/|\+\+\+ b/"
+}
+
+################################### TERMINAL ###################################
+alias home="cd $HOME"
+alias reload="exec $SHELL"
+alias cl="clear"
+alias up="cd ../"
